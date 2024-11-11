@@ -1,8 +1,10 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-    content: [],
-    theme: {
-      extend: {},
+  theme: {
+    extend: {
+      height: {
+        '128': '32rem', // or whatever height you want
+      },
     },
-    plugins: [],
-  }
+  },
+}

@@ -8,76 +8,121 @@
     
     <!-- Tailwind CSS -->
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-
-    <!-- Custom CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />    <!-- Custom CSS -->
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
-    <script>
-        tailwind.config = {
-          theme: {
-            extend: {
-              colors: {
-                clifford: '#da373d',
-              }
-            }
-          }
-        }
-      </script>
+  
  
 </head>
-<body class="w-[90%] mx-auto">
+<body class="bg-white">
 
-<!-- Navbar -->
-<nav id="navbar" class="bg-opacity-80 bg-white border-b-2 p-8 fixed  top-0 z-[900] transition-all  w-full ">
-    <div class=" flex justify-between items-center">
-        <a class="text-3xl font-bold px-4 " href="#" id="logo">Cool Boys</a>
-        <div class="relative">
-            <button id="navbar-toggler" class="text-gray-600 focus:outline-none lg:hidden">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
-            </button>
-            <div class="absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 hidden" id="navbarNav">
-                <ul class="py-1">
-                    <li><a class="block px-4 py-2 text-black hover:bg-gray-200" href="#">Home</a></li>
-                    <li><a class="block px-4 py-2 text-black hover:bg-gray-200" href="#">Jackets</a></li>
-                    <li><a class="block px-4 py-2 text-black hover:bg-gray-200" href="#">Watches</a></li>
-                    <li><a class="block px-4 py-2 text-black hover:bg-gray-200" href="#">Shirts</a></li>
-                    <li><a class="block px-4 py-2 text-black hover:bg-gray-200" href="#">Contact Us</a></li>
-                    
-                </ul>
+    <nav id="navbar" class="bg-opacity-80 bg-white border-b-2 fixed top-0 z-[900] transition-all p-5 ">
+        <div class="flex justify-between items-center font-bold text-green-800 w-11/12 mx-auto text-xl ">
+            <!-- Left section (menu items for large screens) -->
+            <div class="hidden lg:flex space-x-4  ">
+                <a class="py-2 hover:underline" href="{% url "boys_product" %}">For Him</a>
+                <a class="px-4 py-2 hover:underline" href="{% url "boys_product" %}">For Her</a>
+                <a class=" px-4 py-2 hover:underline" href="{% url "boys_product" %}">Unisex</a>
             </div>
+    
+            <!-- Center logo (always visible and centered) -->
+            <div class="flex-grow text-center  text-green-800">
+                <a class="text-3xl font-bold" href="{% url "home" %}" id="logo">Cool Gang</a>
+            </div>
+    
+            <!-- Right section (menu items for large screens) -->
+            <div class="hidden lg:flex space-x-4 ">
+                <a class=" px-4 py-2 hover:underline" href="#">Offers</a>
+                <a class=" px-4 py-2 hover:underline" href="#">New Arrival</a>
+                <div class="relative font-bold">
+                    <button onclick="toggleDropdown()" class="px-4 py-2 hover:underline" >My Account
+                        
+                    </button>
+                    <div id="dropdownMenu" class="absolute hidden bg-white rounded shadow-md mt-2 w-48 py-2 z-20">
+                        <a href="{% url "register_account" %}"class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Register</a>
+                        <a href="{% url "login_account" %}" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">login</a>
+                        <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Settings</a>
+                    </div>
+                </div>
+                <a class=" px-4 py-2 hover:underline" href="#">Search</a>
+                {% comment %} <a class="  py-2 hover:underline" href="#">Cart</a> {% endcomment %}
+            </div>
+    
+            <!-- Mobile menu toggle button -->
+            <button id="navbar-toggler" class="lg:hidden text-gray-600 focus:outline-none">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+                </svg>
+            </button>
         </div>
-        <div class="hidden lg:flex space-x-4">
-            <a class="text-black px-4 py-2 hover:bg-gray-200" href="#">Home</a>
-            <a class="text-black px-4 py-2 hover:bg-gray-200" href="#">Jackets</a>
-            <a class="text-black px-4 py-2 hover:bg-gray-200" href="#">Watches</a>
-            <a class="text-black px-4 py-2 hover:bg-gray-200" href="#">Shirts</a>
-            <a class="text-black px-4 py-2 hover:bg-gray-200" href="#">Contact Us</a>
-            
-            
+    
+        
+        <!-- Mobile dropdown menu (initially hidden) -->
+        <div id="navbarNav" class="lg:hidden mt-2 w-full bg-white shadow-lg ring-1 ring-black ring-opacity-5 hidden">
+            <ul class="py-1 space-y-1">
+                <li><a class="block px-4 py-2 text-black hover:bg-gray-200" href="{% url "boys_product" %}">For Him</a></li>
+                <li><a class="block px-4 py-2 text-black hover:bg-gray-200" href="#">For Her</a></li>
+                <li><a class="block px-4 py-2 text-black hover:bg-gray-200" href="#">Unisex</a></li>
+                <li><a class="block px-4 py-2 text-black hover:bg-gray-200" href="#">Offers</a></li>
+                <li><a class="block px-4 py-2 text-black hover:bg-gray-200" href="#">New Arrival</a></li>
+                <li><a class="block px-4 py-2 text-black hover:bg-gray-200" href="#">My Account</a></li>
+                <li><a class="block px-4 py-2 text-black hover:bg-gray-200" href="#">Search</a></li>
+                <li><a class="block px-4 py-2 text-black hover:bg-gray-200" href="#">Cart</a></li>
+            </ul>
         </div>
-    </div>
-</nav>
+    </nav>
+    <script>
+
+// Function to toggle the dropdown visibility
+function toggleDropdown() {
+    const dropdown = document.getElementById('dropdownMenu');
+    dropdown.classList.toggle('hidden');
+}
+
+// Close the dropdown if clicked outside
+window.onclick = function(event) {
+    const dropdown = document.getElementById('dropdownMenu');
+    const dropdownButton = document.querySelector('[onclick="toggleDropdown()"]');
+    
+    // Check if the click is outside the dropdown and the dropdown button
+    if (!dropdown.contains(event.target) && !dropdownButton.contains(event.target)) {
+        dropdown.classList.add('hidden'); // Close the dropdown
+    }
+};
+
+// Mobile menu toggle functionality
+const navbarToggler = document.getElementById('navbar-toggler');
+const navbarNav = document.getElementById('navbarNav');
+
+navbarToggler.addEventListener('click', () => {
+    navbarNav.classList.toggle('hidden');
+});
+
+    </script>
+
 
 <!-- Carousel Section -->
-<!-- Carousel Section -->
+{% block hero %}
+
+
 <div id="carouselExampleCaptions" class="relative h-[calc(100vh-64px)]">
     <div class="carousel-inner" > <!-- Adjust for navbar height -->
         <!-- Carousel items -->
         <div class="carousel-item active">
-            <img src="{% static 'image/hero1.jpg' %}" class="d-block w-full carousel-img" alt="First Slide">
+            <img src="{% static 'image/hero1.jpg' %}" class="d-block w-full object-cover carousel-img" alt="First Slide">
             <div class="absolute inset-0 flex flex-col items-center justify-center bg-black bg-opacity-50 text-white">
                 <h5 class="text-xl font-bold">First Slide Label</h5>
                 <p>Some description for the first slide.</p>
             </div>
         </div>
         <div class="carousel-item">
-            <img src="{% static 'image/hero2.jpg' %}" class="d-block w-full carousel-img" alt="Second Slide">
+            <img src="{% static 'image/hero2.jpg' %}" class="d-block w-full   object-cover carousel-img" alt="Second Slide">
             <div class="absolute inset-0 flex flex-col items-center justify-center bg-black bg-opacity-50 text-white">
                 <h5 class="text-xl font-bold">Second Slide Label</h5>
                 <p>Some description for the second slide.</p>
             </div>
         </div>
         <div class="carousel-item">
-            <img src="{% static 'image/hero3.jpg' %}" class="d-block w-full carousel-img" alt="Third Slide">
+            <img src="{% static 'image/hero3.jpg' %}" class="d-block w-full object-cover carousel-img" alt="Third Slide">
             <div class="absolute inset-0 flex flex-col items-center justify-center bg-black bg-opacity-50 text-white">
                 <h5 class="text-xl font-bold">Third Slide Label</h5>
                 <p>Some description for the third slide.</p>
@@ -101,38 +146,735 @@
 </div>
 
 
-<!-- New Arrivals Section -->
-<section class="py-20">
-    <div class="container mx-auto">
-        <h2 class="text-center text-3xl font-bold mb-10">Our Awesome New Arrivals</h2>
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-            <div class="bg-white rounded-lg shadow-lg text-center p-4">
-                <img src="{% static 'image/jacket.jpg' %}" class="img-fluid" alt="Product">
-                <h5 class="mt-3 text-lg font-semibold">Mens Leather Jacket</h5>
-                <button class="btn btn-dark mt-2 bg-gray-800 text-white py-2 px-4 rounded">Add to Cart</button>
+
+<section class="py-12 h-auto w-11/12 m-auto">
+    <div class="grid grid-cols-1 md:grid-cols-2 ">
+        <!-- Essentials For Him -->
+        <div class="max-h-96 flex items-center justify-center text-center border-gray-200 border-b border-t border-r px-4">
+            <div class="w-1/2 h-full flex flex-col justify-center md:mt-10">
+                <h2 class="text-4xl font-bold mb-2 text-green-800 text-left pb-4">Essentials Styles For Him</h2>
+                <p class="text-gray-500 text-xl font-medium mb-8 text-left">Discover the essence of summer fashion.</p>
+                <a href="#" class="bg-green-800 px-6 py-2 text-2xl font-medium text-white rounded-xl hover:bg-gray-600 transition self-start">For Him</a>
             </div>
-            <!-- More product cards here -->
+            <div class="h-full flex items-center">
+                <img class="object-cover h-full w-auto px-9" src="{% static 'image/men.png' %}" alt="Essentials for Him">
+            </div>
+        </div>
+
+        <!-- Casual Styles For Her -->
+        <div class="max-h-96 flex items-center justify-center text-center border-gray-300 border-b border-t">
+            <div class="h-full flex items-center">
+                <img class="w-auto h-full object-cover px-9" src="{% static 'image/women.png' %}" alt="Casual Styles for Her">
+            </div>
+            <div class="w-1/2 h-full flex flex-col justify-center md:px-10 md:mt-10">
+                <h2 class="text-4xl font-bold text-green-800 mb-2 text-left pb-4">Casual Styles For Her</h2>
+                <p class="text-gray-500 text-xl font-medium mb-8 text-left">Unleash your confidence with our new collection.</p>
+                <a href="#" class="bg-green-800 px-6 py-2 text-2xl font-medium text-white rounded-xl hover:bg-gray-600 transition self-start">For Her</a>
+            </div>
         </div>
     </div>
 </section>
 
-<!-- Suggested For You Section -->
-<section class="py-20 bg-gray-100">
-    <div class="container mx-auto">
-        <h2 class="text-center text-3xl font-bold mb-10">Suggested For You</h2>
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-            <div class="bg-white rounded-lg shadow-lg text-center p-4">
-                <img src="{% static 'image/watch.jpg' %}" class="img-fluid" alt="Product">
-                <h5 class="mt-3 text-lg font-semibold">Mens Watches</h5>
-                <button class="btn btn-dark mt-2 bg-gray-800 text-white py-2 px-4 rounded">Add to Cart</button>
+<!-- newly arrival -->
+<section class="pt-20">
+    <div class="w-11/12 mx-auto py-10 text-green-800">
+        <h1 class="text-3xl font-bold text-center mb-8">Newly Arrived Collection</h1>
+        
+        <!-- Product Grid -->
+        <div class="grid grid-cols-2 gap-2">
+                
+                <!-- Product Card 1 -->
+            <div class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-1 gap-8 mx-auto">
+
+                <div class="bg-white  rounded-lg overflow-hidden ">
+                    <!-- Main Product Image -->
+                    <img src="{% static 'image/hero4.jpg' %}" alt="Product" class=" object-cover">
+                    <div class="p-5">
+                    <!-- Thumbnails -->
+                        <div class="flex justify-center mt-4 px-2 space-x-2">
+                            <img src="{% static 'image/hero4.jpg' %}" alt="Thumbnail" class="w-12 h-12 object-cover border border-gray-300 rounded-md cursor-pointer">
+                            <img src="{% static 'image/hero1.jpg' %}" alt="Thumbnail" class="w-12 h-12 object-cover border border-gray-300 rounded-md cursor-pointer">
+                            <img src="{% static 'image/men.png' %}" alt="Thumbnail" class="w-12 h-12 object-cover border border-gray-300 rounded-md cursor-pointer">
+                            <img src="{% static 'image/hero2.jpg' %}" alt="Thumbnail" class="w-12 h-12 object-cover border border-gray-300 rounded-md cursor-pointer">
+                        </div>
+                    
+                    <!-- Product Details -->
+                 
+                        <h3 class="text-lg font-semibold text-gray-800 text-center">Sheep Polyfiber Unisex Collar Jacket (KSUC42411)</h3>
+                        <p class="text-sm text-gray-600">Winter Wear</p>
+                        
+                        <!-- Color Options -->
+                        <div class="flex items-center mt-3">
+                            <div class="w-6 h-6 rounded-full bg-gray-400 border-2 border-gray-200"></div>
+                            <div class="w-6 h-6 rounded-full bg-black border-2 border-gray-200 ml-2"></div>
+                            <div class="w-6 h-6 rounded-full bg-yellow-200 border-2 border-gray-200 ml-2"></div>
+                        </div>
+                        
+                        <!-- Sizes -->
+                        <div class="text-sm text-gray-600 mt-2">Sizes: S | M | L | XL | XXL</div>
+                        
+                        <!-- Buttons -->
+                        <div class="flex items-center justify-between mt-4">
+                            <button class="text-gray-600 hover:text-black font-semibold text-sm flex items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-4.553M19.074 5.53a9 9 0 11-1.128 1.415M5.53 19.074a9 9 0 111.415-1.128L10 15m4-4L10 5m-4 4L5 10"></path>
+                                </svg>
+                                Quick View
+                            </button>
+                            <button class="text-gray-600 hover:text-black font-semibold text-sm flex items-center ">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h3v12H3V3zm18 0h-3v12h3V3zM3 15v6h3v-6H3zm18 0v6h-3v-6h3z"></path>
+                                </svg>
+                                Add to Cart
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <!-- More product cards here -->
+
+    
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-8">
+                <!-- Product Card 1 -->
+                <div class="bg-white shadow-lg rounded-lg overflow-hidden">
+                    <!-- Product Image with hover effect -->
+                    <div class="relative">
+                        <img src="{% static 'image/hero4.jpg' %}" alt="Product Image" class="w-full h-64 object-cover">
+                        <!-- Hover icons -->
+                        <div class="absolute inset-0 flex justify-center items-center gap-2 opacity-0 hover:opacity-100 bg-black bg-opacity-50 transition-opacity duration-300">
+                            <button class="text-white text-lg p-2 rounded-full bg-gray-800 hover:bg-gray-700">
+                                <i class="fas fa-search"></i> <!-- Quick View Icon -->
+                            </button>
+                            <button class="text-white text-lg p-2 rounded-full bg-gray-800 hover:bg-gray-700">
+                                <i class="fas fa-heart"></i> <!-- Wishlist Icon -->
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Product Details -->
+                    <div class="p-4">
+                        <h3 class="text-lg font-semibold text-gray-800">Sheep Polyfiber Unisex Collar Jacket</h3>
+                        <p class="text-sm text-gray-500">Winter Wear</p>
+                        
+                        <!-- Sizes and Colors -->
+                        <div class="flex items-center justify-between mt-2">
+                            <span class="text-sm text-gray-500">Sizes: S | M | L | XL</span>
+                            <div class="flex gap-1">
+                                <span class="w-4 h-4 rounded-full bg-gray-400 border border-gray-300"></span>
+                                <span class="w-4 h-4 rounded-full bg-black border border-gray-300"></span>
+                                <span class="w-4 h-4 rounded-full bg-yellow-300 border border-gray-300"></span>
+                            </div>
+                        </div>
+
+                        <!-- Price and Rating -->
+                        <div class="flex items-center justify-between mt-4">
+                            <span class="text-lg font-semibold text-gray-800">रु 2,090</span>
+                            <span class="text-sm line-through text-gray-500">रु 2,300</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product Card 2 -->
+                <div class="bg-white shadow-lg rounded-lg overflow-hidden">
+                    <div class="relative">
+                        <img src="{% static 'image/hero1.jpg' %}" alt="Product Image" class="w-full h-64 object-cover">
+                        <div class="absolute inset-0 flex justify-center items-center gap-2 opacity-0 hover:opacity-100 bg-black bg-opacity-50 transition-opacity duration-300">
+                            <button class="text-white text-lg p-2 rounded-full bg-gray-800 hover:bg-gray-700">
+                                <i class="fas fa-search"></i>
+                            </button>
+                            <button class="text-white text-lg p-2 rounded-full bg-gray-800 hover:bg-gray-700">
+                                <i class="fas fa-heart"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="text-lg font-semibold text-gray-800">Men's Leather Boots</h3>
+                        <p class="text-sm text-gray-500">Durable and Waterproof</p>
+                        <div class="flex items-center justify-between mt-2">
+                            <span class="text-sm text-gray-500">Sizes: S | M | L | XL</span>
+                            <div class="flex gap-1">
+                                <span class="w-4 h-4 rounded-full bg-brown-600 border border-gray-300"></span>
+                                <span class="w-4 h-4 rounded-full bg-black border border-gray-300"></span>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between mt-4">
+                            <span class="text-lg font-semibold text-gray-800">रु 4,500</span>
+                            <span class="text-sm line-through text-gray-500">रु 5,000</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product Card 3 -->
+                <div class="bg-white shadow-lg rounded-lg overflow-hidden">
+                    <div class="relative">
+                        <img src="{% static 'image/hero2.jpg' %}" alt="Product Image" class="w-full h-64 object-cover">
+                        <div class="absolute inset-0 flex justify-center items-center gap-2 opacity-0 hover:opacity-100 bg-black bg-opacity-50 transition-opacity duration-300">
+                            <button class="text-white text-lg p-2 rounded-full bg-gray-800 hover:bg-gray-700">
+                                <i class="fas fa-search"></i>
+                            </button>
+                            <button class="text-white text-lg p-2 rounded-full bg-gray-800 hover:bg-gray-700">
+                                <i class="fas fa-heart"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="text-lg font-semibold text-gray-800">Women's Winter Coat</h3>
+                        <p class="text-sm text-gray-500">Stylish and Warm</p>
+                        <div class="flex items-center justify-between mt-2">
+                            <span class="text-sm text-gray-500">Sizes: XS | S | M | L</span>
+                            <div class="flex gap-1">
+                                <span class="w-4 h-4 rounded-full bg-red-600 border border-gray-300"></span>
+                                <span class="w-4 h-4 rounded-full bg-gray-600 border border-gray-300"></span>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between mt-4">
+                            <span class="text-lg font-semibold text-gray-800">रु 3,000</span>
+                            <span class="text-sm line-through text-gray-500">रु 3,500</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product Card 4 -->
+                <div class="bg-white shadow-lg rounded-lg overflow-hidden">
+                    <div class="relative">
+                        <img src="{% static 'image/hero3.jpg' %}" alt="Product Image" class="w-full h-64 object-cover">
+                        <div class="absolute inset-0 flex justify-center items-center gap-2 opacity-0 hover:opacity-100 bg-black bg-opacity-50 transition-opacity duration-300">
+                            <button class="text-white text-lg p-2 rounded-full bg-gray-800 hover:bg-gray-700">
+                                <i class="fas fa-search"></i>
+                            </button>
+                            <button class="text-white text-lg p-2 rounded-full bg-gray-800 hover:bg-gray-700">
+                                <i class="fas fa-heart"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="text-lg font-semibold text-gray-800">Unisex Fleece Trouser</h3>
+                        <p class="text-sm text-gray-500">Comfortable and Warm</p>
+                        <div class="flex items-center justify-between mt-2">
+                            <span class="text-sm text-gray-500">Sizes: S | M | L | XL</span>
+                            <div class="flex gap-1">
+                                <span class="w-4 h-4 rounded-full bg-blue-500 border border-gray-300"></span>
+                                <span class="w-4 h-4 rounded-full bg-gray-800 border border-gray-300"></span>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between mt-4">
+                            <span class="text-lg font-semibold text-gray-800">रु 900</span>
+                            <span class="text-sm line-through text-gray-500">रु 1,200</span>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="bg-white shadow-lg rounded-lg overflow-hidden">
+                    <div class="relative">
+                        <img src="{% static 'image/hero2.jpg' %}" alt="Product Image" class="w-full h-64 object-cover">
+                        <div class="absolute inset-0 flex justify-center items-center gap-2 opacity-0 hover:opacity-100 bg-black bg-opacity-50 transition-opacity duration-300">
+                            <button class="text-white text-lg p-2 rounded-full bg-gray-800 hover:bg-gray-700">
+                                <i class="fas fa-search"></i>
+                            </button>
+                            <button class="text-white text-lg p-2 rounded-full bg-gray-800 hover:bg-gray-700">
+                                <i class="fas fa-heart"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="text-lg font-semibold text-gray-800">Women's Winter Coat</h3>
+                        <p class="text-sm text-gray-500">Stylish and Warm</p>
+                        <div class="flex items-center justify-between mt-2">
+                            <span class="text-sm text-gray-500">Sizes: XS | S | M | L</span>
+                            <div class="flex gap-1">
+                                <span class="w-4 h-4 rounded-full bg-red-600 border border-gray-300"></span>
+                                <span class="w-4 h-4 rounded-full bg-gray-600 border border-gray-300"></span>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between mt-4">
+                            <span class="text-lg font-semibold text-gray-800">रु 3,000</span>
+                            <span class="text-sm line-through text-gray-500">रु 3,500</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product Card 4 -->
+                <div class="bg-white shadow-lg rounded-lg overflow-hidden">
+                    <div class="relative">
+                        <img src="{% static 'image/hero3.jpg' %}" alt="Product Image" class="w-full h-64 object-cover">
+                        <div class="absolute inset-0 flex justify-center items-center gap-2 opacity-0 hover:opacity-100 bg-black bg-opacity-50 transition-opacity duration-300">
+                            <button class="text-white text-lg p-2 rounded-full bg-gray-800 hover:bg-gray-700">
+                                <i class="fas fa-search"></i>
+                            </button>
+                            <button class="text-white text-lg p-2 rounded-full bg-gray-800 hover:bg-gray-700">
+                                <i class="fas fa-heart"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="text-lg font-semibold text-gray-800">Unisex Fleece Trouser</h3>
+                        <p class="text-sm text-gray-500">Comfortable and Warm</p>
+                        <div class="flex items-center justify-between mt-2">
+                            <span class="text-sm text-gray-500">Sizes: S | M | L | XL</span>
+                            <div class="flex gap-1">
+                                <span class="w-4 h-4 rounded-full bg-blue-500 border border-gray-300"></span>
+                                <span class="w-4 h-4 rounded-full bg-gray-800 border border-gray-300"></span>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between mt-4">
+                            <span class="text-lg font-semibold text-gray-800">रु 900</span>
+                            <span class="text-sm line-through text-gray-500">रु 1,200</span>
+                        </div>
+                    </div>
+                </div>
+
+
+                
+                <!-- Add more product cards as needed following the same structure -->
+
+            </div>
+        </div>
+        
+        <div class="pt-10">
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8">
+                <!-- Product Card 1 -->
+               
+    
+                <!-- Product Card 2 -->
+                <div class="bg-white shadow-lg rounded-lg overflow-hidden">
+                    <div class="relative">
+                        <img src="{% static 'image/hero1.jpg' %}" alt="Product Image" class="w-full h-64 object-cover">
+                        <div class="absolute inset-0 flex justify-center items-center gap-2 opacity-0 hover:opacity-100 bg-black bg-opacity-50 transition-opacity duration-300">
+                            <button class="text-white text-lg p-2 rounded-full bg-gray-800 hover:bg-gray-700">
+                                <i class="fas fa-search"></i>
+                            </button>
+                            <button class="text-white text-lg p-2 rounded-full bg-gray-800 hover:bg-gray-700">
+                                <i class="fas fa-heart"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="text-lg font-semibold text-gray-800">Men's Leather Boots</h3>
+                        <p class="text-sm text-gray-500">Durable and Waterproof</p>
+                        <div class="flex items-center justify-between mt-2">
+                            <span class="text-sm text-gray-500">Sizes: S | M | L | XL</span>
+                            <div class="flex gap-1">
+                                <span class="w-4 h-4 rounded-full bg-brown-600 border border-gray-300"></span>
+                                <span class="w-4 h-4 rounded-full bg-black border border-gray-300"></span>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between mt-4">
+                            <span class="text-lg font-semibold text-gray-800">रु 4,500</span>
+                            <span class="text-sm line-through text-gray-500">रु 5,000</span>
+                        </div>
+                    </div>
+                </div>
+    
+                <!-- Product Card 3 -->
+                <div class="bg-white shadow-lg rounded-lg overflow-hidden">
+                    <div class="relative">
+                        <img src="{% static 'image/hero2.jpg' %}" alt="Product Image" class="w-full h-64 object-cover">
+                        <div class="absolute inset-0 flex justify-center items-center gap-2 opacity-0 hover:opacity-100 bg-black bg-opacity-50 transition-opacity duration-300">
+                            <button class="text-white text-lg p-2 rounded-full bg-gray-800 hover:bg-gray-700">
+                                <i class="fas fa-search"></i>
+                            </button>
+                            <button class="text-white text-lg p-2 rounded-full bg-gray-800 hover:bg-gray-700">
+                                <i class="fas fa-heart"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="text-lg font-semibold text-gray-800">Women's Winter Coat</h3>
+                        <p class="text-sm text-gray-500">Stylish and Warm</p>
+                        <div class="flex items-center justify-between mt-2">
+                            <span class="text-sm text-gray-500">Sizes: XS | S | M | L</span>
+                            <div class="flex gap-1">
+                                <span class="w-4 h-4 rounded-full bg-red-600 border border-gray-300"></span>
+                                <span class="w-4 h-4 rounded-full bg-gray-600 border border-gray-300"></span>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between mt-4">
+                            <span class="text-lg font-semibold text-gray-800">रु 3,000</span>
+                            <span class="text-sm line-through text-gray-500">रु 3,500</span>
+                        </div>
+                    </div>
+                </div>
+    
+                <!-- Product Card 4 -->
+                <div class="bg-white shadow-lg rounded-lg overflow-hidden">
+                    <div class="relative">
+                        <img src="{% static 'image/hero3.jpg' %}" alt="Product Image" class="w-full h-64 object-cover">
+                        <div class="absolute inset-0 flex justify-center items-center gap-2 opacity-0 hover:opacity-100 bg-black bg-opacity-50 transition-opacity duration-300">
+                            <button class="text-white text-lg p-2 rounded-full bg-gray-800 hover:bg-gray-700">
+                                <i class="fas fa-search"></i>
+                            </button>
+                            <button class="text-white text-lg p-2 rounded-full bg-gray-800 hover:bg-gray-700">
+                                <i class="fas fa-heart"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="text-lg font-semibold text-gray-800">Unisex Fleece Trouser</h3>
+                        <p class="text-sm text-gray-500">Comfortable and Warm</p>
+                        <div class="flex items-center justify-between mt-2">
+                            <span class="text-sm text-gray-500">Sizes: S | M | L | XL</span>
+                            <div class="flex gap-1">
+                                <span class="w-4 h-4 rounded-full bg-blue-500 border border-gray-300"></span>
+                                <span class="w-4 h-4 rounded-full bg-gray-800 border border-gray-300"></span>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between mt-4">
+                            <span class="text-lg font-semibold text-gray-800">रु 900</span>
+                            <span class="text-sm line-through text-gray-500">रु 1,200</span>
+                        </div>
+                    </div>
+                </div>
+    
+    
+                <div class="bg-white shadow-lg rounded-lg overflow-hidden">
+                    <div class="relative">
+                        <img src="{% static 'image/hero2.jpg' %}" alt="Product Image" class="w-full h-64 object-cover">
+                        <div class="absolute inset-0 flex justify-center items-center gap-2 opacity-0 hover:opacity-100 bg-black bg-opacity-50 transition-opacity duration-300">
+                            <button class="text-white text-lg p-2 rounded-full bg-gray-800 hover:bg-gray-700">
+                                <i class="fas fa-search"></i>
+                            </button>
+                            <button class="text-white text-lg p-2 rounded-full bg-gray-800 hover:bg-gray-700">
+                                <i class="fas fa-heart"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="text-lg font-semibold text-gray-800">Women's Winter Coat</h3>
+                        <p class="text-sm text-gray-500">Stylish and Warm</p>
+                        <div class="flex items-center justify-between mt-2">
+                            <span class="text-sm text-gray-500">Sizes: XS | S | M | L</span>
+                            <div class="flex gap-1">
+                                <span class="w-4 h-4 rounded-full bg-red-600 border border-gray-300"></span>
+                                <span class="w-4 h-4 rounded-full bg-gray-600 border border-gray-300"></span>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between mt-4">
+                            <span class="text-lg font-semibold text-gray-800">रु 3,000</span>
+                            <span class="text-sm line-through text-gray-500">रु 3,500</span>
+                        </div>
+                    </div>
+                </div>
+    
+                <!-- Product Card 4 -->
+                <div class="bg-white shadow-lg rounded-lg overflow-hidden">
+                    <div class="relative">
+                        <img src="{% static 'image/hero3.jpg' %}" alt="Product Image" class="w-full h-64 object-cover">
+                        <div class="absolute inset-0 flex justify-center items-center gap-2 opacity-0 hover:opacity-100 bg-black bg-opacity-50 transition-opacity duration-300">
+                            <button class="text-white text-lg p-2 rounded-full bg-gray-800 hover:bg-gray-700">
+                                <i class="fas fa-search"></i>
+                            </button>
+                            <button class="text-white text-lg p-2 rounded-full bg-gray-800 hover:bg-gray-700">
+                                <i class="fas fa-heart"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="text-lg font-semibold text-gray-800">Unisex Fleece Trouser</h3>
+                        <p class="text-sm text-gray-500">Comfortable and Warm</p>
+                        <div class="flex items-center justify-between mt-2">
+                            <span class="text-sm text-gray-500">Sizes: S | M | L | XL</span>
+                            <div class="flex gap-1">
+                                <span class="w-4 h-4 rounded-full bg-blue-500 border border-gray-300"></span>
+                                <span class="w-4 h-4 rounded-full bg-gray-800 border border-gray-300"></span>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between mt-4">
+                            <span class="text-lg font-semibold text-gray-800">रु 900</span>
+                            <span class="text-sm line-through text-gray-500">रु 1,200</span>
+                        </div>
+                    </div>
+                </div>
+    
+    
+        </div>
+    </div>
+</section> 
+
+
+<!-- for men clothes -->
+<section class="py-7 w-11/12 m-auto  ">
+    <div class="flex justify-between py-8">
+        <div class="bg-white  text-3xl font-bold text-green-800 uppercase"> men's clothes</div>
+        <a href="#" class="bg-green-800 text-xl px-5 py-3 text-white">View all</a>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 ">
+        <!-- Card 1 -->
+        <div class="bg-white shadow-md rounded-lg overflow-hidden">
+            <img src="https://d1fufvy4xao6k9.cloudfront.net/images/blog/posts/2023/10/hockerty_man_wearing_a_white_dress_shirt_fbf967e3_6c26_4585_bdba_8bf8ae713b76.jpg" alt=""  class="w-full h-80 object-cover">
+            <div class="p-4">
+                <h3 class="text-gray-700 font-semibold text-lg">Cotton-linen tailored jacket with pockets</h3>
+                <div class="flex items-center space-x-1 mt-2">
+                    <span class="w-4 h-4 bg-green-600 rounded-full"></span>
+                    <span class="w-4 h-4 bg-green-600 rounded-full"></span>
+                    <span class="w-4 h-4 bg-green-600 rounded-full"></span>
+                </div>
+                <p class="text-gray-800 font-bold mt-2">$50</p>
+            </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="bg-white shadow-md rounded-lg overflow-hidden">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRTm9Umy3pgNd1LDJfGXOGJSNiRsrflPQNjJOLRsm4mONpv52z3vh_IVPPa3UXazXorquE&usqp=CAU" alt="Product Image" class="w-full h-80 object-cover">
+            <div class="p-4">
+                <h3 class="text-gray-700 font-semibold text-lg">Cotton kangaroo-hooded sweatshirt</h3>
+                <div class="flex items-center space-x-1 mt-2">
+                    <span class="w-4 h-4 bg-green-600 rounded-full"></span>
+                    <span class="w-4 h-4 bg-green-600 rounded-full"></span>
+                    <span class="w-4 h-4 bg-green-600 rounded-full"></span>
+                </div>
+                <p class="text-gray-800 font-bold mt-2">$70</p>
+            </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="bg-white shadow-md rounded-lg overflow-hidden">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRcoa0H9oJOOuUJ4fsGguGPwBRjW8LYjd-2eqLpp_g9sUlsXMRsZZck9Z8gvz6D5SMzJ4g&usqp=CAU" alt="Product Image" class="w-full h-80 object-cover">
+            <div class="p-4">
+                <h3 class="text-gray-700 font-semibold text-lg">Cotton-linen tailored jacket with pockets</h3>
+                <div class="flex items-center space-x-1 mt-2">
+                    <span class="w-4 h-4 bg-green-600 rounded-full"></span>
+                    <span class="w-4 h-4 bg-green-600 rounded-full"></span>
+                    <span class="w-4 h-4 bg-green-600 rounded-full"></span>
+                </div>
+                <p class="text-gray-800 font-bold mt-2">$90</p>
+            </div>
+        </div>
+
+        <div class="bg-white shadow-md rounded-lg overflow-hidden">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSCcQu9YF35tUhsz5BID94vegVPVz5b__dZ9g&s" alt="Product Image" class="w-full h-80 object-cover">
+            <div class="p-4">
+                <h3 class="text-gray-700 font-semibold text-lg">Cotton-linen tailored jacket with pockets</h3>
+                <div class="flex items-center space-x-1 mt-2">
+                    <span class="w-4 h-4 bg-green-600 rounded-full"></span>
+                    <span class="w-4 h-4 bg-green-600 rounded-full"></span>
+                    <span class="w-4 h-4 bg-green-600 rounded-full"></span>
+                </div>
+                <p class="text-gray-800 font-bold mt-2">$90</p>
+            </div>
         </div>
     </div>
 </section>
+
+
+<!-- for womens clothes -->
+<section class="py-7 w-11/12 m-auto  ">
+    <div class="flex justify-between py-8">
+        <div class="bg-white  text-3xl font-bold text-green-800 uppercase"> womens's clothes</div>
+        <a href="#" class="bg-green-800 text-xl px-5 py-3 text-white">View all</a>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 ">
+        <!-- Card 1 -->
+        <div class="bg-white shadow-md rounded-lg overflow-hidden">
+            <img src="https://d1fufvy4xao6k9.cloudfront.net/images/blog/posts/2023/10/hockerty_man_wearing_a_white_dress_shirt_fbf967e3_6c26_4585_bdba_8bf8ae713b76.jpg" alt=""  class="w-full h-80 object-cover">
+            <div class="p-4">
+                <h3 class="text-gray-700 font-semibold text-lg">Cotton-linen tailored jacket with pockets</h3>
+                <div class="flex items-center space-x-1 mt-2">
+                    <span class="w-4 h-4 bg-green-600 rounded-full"></span>
+                    <span class="w-4 h-4 bg-green-600 rounded-full"></span>
+                    <span class="w-4 h-4 bg-green-600 rounded-full"></span>
+                </div>
+                <p class="text-gray-800 font-bold mt-2">$50</p>
+            </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="bg-white shadow-md rounded-lg overflow-hidden">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRTm9Umy3pgNd1LDJfGXOGJSNiRsrflPQNjJOLRsm4mONpv52z3vh_IVPPa3UXazXorquE&usqp=CAU" alt="Product Image" class="w-full h-80 object-cover">
+            <div class="p-4">
+                <h3 class="text-gray-700 font-semibold text-lg">Cotton kangaroo-hooded sweatshirt</h3>
+                <div class="flex items-center space-x-1 mt-2">
+                    <span class="w-4 h-4 bg-green-600 rounded-full"></span>
+                    <span class="w-4 h-4 bg-green-600 rounded-full"></span>
+                    <span class="w-4 h-4 bg-green-600 rounded-full"></span>
+                </div>
+                <p class="text-gray-800 font-bold mt-2">$70</p>
+            </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="bg-white shadow-md rounded-lg overflow-hidden">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRcoa0H9oJOOuUJ4fsGguGPwBRjW8LYjd-2eqLpp_g9sUlsXMRsZZck9Z8gvz6D5SMzJ4g&usqp=CAU" alt="Product Image" class="w-full h-80 object-cover">
+            <div class="p-4">
+                <h3 class="text-gray-700 font-semibold text-lg">Cotton-linen tailored jacket with pockets</h3>
+                <div class="flex items-center space-x-1 mt-2">
+                    <span class="w-4 h-4 bg-green-600 rounded-full"></span>
+                    <span class="w-4 h-4 bg-green-600 rounded-full"></span>
+                    <span class="w-4 h-4 bg-green-600 rounded-full"></span>
+                </div>
+                <p class="text-gray-800 font-bold mt-2">$90</p>
+            </div>
+        </div>
+
+        <div class="bg-white shadow-md rounded-lg overflow-hidden">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSCcQu9YF35tUhsz5BID94vegVPVz5b__dZ9g&s" alt="Product Image" class="w-full h-80 object-cover">
+            <div class="p-4">
+                <h3 class="text-gray-700 font-semibold text-lg">Cotton-linen tailored jacket with pockets</h3>
+                <div class="flex items-center space-x-1 mt-2">
+                    <span class="w-4 h-4 bg-green-600 rounded-full"></span>
+                    <span class="w-4 h-4 bg-green-600 rounded-full"></span>
+                    <span class="w-4 h-4 bg-green-600 rounded-full"></span>
+                </div>
+                <p class="text-gray-800 font-bold mt-2">$90</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- for unisex clothes -->
+<section class="py-7 w-11/12 m-auto  ">
+    <div class="flex justify-between py-8">
+        <div class="bg-white  text-3xl font-bold text-green-800 uppercase"> Unisex's clothes</div>
+        <a href="#" class="bg-green-800 text-xl px-5 py-3 text-white">View all</a>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 ">
+        <!-- Card 1 -->
+        <div class="bg-white shadow-md rounded-lg overflow-hidden">
+            <img src="https://d1fufvy4xao6k9.cloudfront.net/images/blog/posts/2023/10/hockerty_man_wearing_a_white_dress_shirt_fbf967e3_6c26_4585_bdba_8bf8ae713b76.jpg" alt=""  class="w-full h-80 object-cover">
+            <div class="p-4">
+                <h3 class="text-gray-700 font-semibold text-lg">Cotton-linen tailored jacket with pockets</h3>
+                <div class="flex items-center space-x-1 mt-2">
+                    <span class="w-4 h-4 bg-green-600 rounded-full"></span>
+                    <span class="w-4 h-4 bg-green-600 rounded-full"></span>
+                    <span class="w-4 h-4 bg-green-600 rounded-full"></span>
+                </div>
+                <p class="text-gray-800 font-bold mt-2">$50</p>
+            </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="bg-white shadow-md rounded-lg overflow-hidden">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRTm9Umy3pgNd1LDJfGXOGJSNiRsrflPQNjJOLRsm4mONpv52z3vh_IVPPa3UXazXorquE&usqp=CAU" alt="Product Image" class="w-full h-80 object-cover">
+            <div class="p-4">
+                <h3 class="text-gray-700 font-semibold text-lg">Cotton kangaroo-hooded sweatshirt</h3>
+                <div class="flex items-center space-x-1 mt-2">
+                    <span class="w-4 h-4 bg-green-600 rounded-full"></span>
+                    <span class="w-4 h-4 bg-green-600 rounded-full"></span>
+                    <span class="w-4 h-4 bg-green-600 rounded-full"></span>
+                </div>
+                <p class="text-gray-800 font-bold mt-2">$70</p>
+            </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="bg-white shadow-md rounded-lg overflow-hidden">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRcoa0H9oJOOuUJ4fsGguGPwBRjW8LYjd-2eqLpp_g9sUlsXMRsZZck9Z8gvz6D5SMzJ4g&usqp=CAU" alt="Product Image" class="w-full h-80 object-cover">
+            <div class="p-4">
+                <h3 class="text-gray-700 font-semibold text-lg">Cotton-linen tailored jacket with pockets</h3>
+                <div class="flex items-center space-x-1 mt-2">
+                    <span class="w-4 h-4 bg-green-600 rounded-full"></span>
+                    <span class="w-4 h-4 bg-green-600 rounded-full"></span>
+                    <span class="w-4 h-4 bg-green-600 rounded-full"></span>
+                </div>
+                <p class="text-gray-800 font-bold mt-2">$90</p>
+            </div>
+        </div>
+
+        <div class="bg-white shadow-md rounded-lg overflow-hidden">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSCcQu9YF35tUhsz5BID94vegVPVz5b__dZ9g&s" alt="Product Image" class="w-full h-80 object-cover">
+            <div class="p-4">
+                <h3 class="text-gray-700 font-semibold text-lg">Cotton-linen tailored jacket with pockets</h3>
+                <div class="flex items-center space-x-1 mt-2">
+                    <span class="w-4 h-4 bg-green-600 rounded-full"></span>
+                    <span class="w-4 h-4 bg-green-600 rounded-full"></span>
+                    <span class="w-4 h-4 bg-green-600 rounded-full"></span>
+                </div>
+                <p class="text-gray-800 font-bold mt-2">$90</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock  %}
+<!-- New Arrivals Section -->
+
+
+
+
+
+ 
+       
+         
+
+  
+
+
+<!-- checkout cart -->
+{% comment %} <section class="py-20 bg-gray-100">
+    <div class="container mx-auto p-6 bg-white shadow-lg rounded-lg">
+        <h1 class="text-3xl font-bold mb-10 text-gray-800 text-center">Shopping Cart</h1>
+
+        <!-- Cart Items List -->
+        <div class="space-y-8">
+            
+            <!-- Cart Item 1 -->
+            <div class="flex items-center border-b pb-6">
+                <img src="{% static 'image/hero4.jpg' %}" alt="Product Image" class="w-20 h-20 object-cover rounded mr-4">
+                
+                <div class="flex-grow">
+                    <h2 class="text-lg font-semibold text-gray-700">Sheep Polyfiber Unisex Collar Jacket</h2>
+                    <p class="text-sm text-gray-500">Winter Wear</p>
+                    
+                    <!-- Quantity Selector -->
+                    <div class="mt-2 flex items-center">
+                        <button class="px-2 py-1 border border-gray-300 text-gray-600 hover:bg-gray-200 rounded-md">-</button>
+                        <input type="text" value="1" class="w-12 text-center mx-2 border border-gray-300 rounded-md">
+                        <button class="px-2 py-1 border border-gray-300 text-gray-600 hover:bg-gray-200 rounded-md">+</button>
+                    </div>
+                </div>
+
+                <div class="text-center">
+                    <span class="text-gray-800 font-semibold">$99.00</span>
+                </div>
+
+                <button class="text-red-500 ml-4 hover:text-red-700">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Additional cart items can be copied here with different product details -->
+
+        </div>
+
+        <!-- Summary Section -->
+        <div class="mt-10">
+            <h2 class="text-lg font-semibold text-gray-700">Order Summary</h2>
+            <div class="bg-gray-50 p-6 mt-4 rounded-lg shadow">
+                <div class="flex justify-between mb-4">
+                    <span class="text-gray-600">Subtotal</span>
+                    <span class="text-gray-800 font-medium">$99.00</span>
+                </div>
+                <div class="flex justify-between mb-4">
+                    <span class="text-gray-600">Shipping</span>
+                    <span class="text-gray-800 font-medium">$10.00</span>
+                </div>
+                <div class="flex justify-between mb-4">
+                    <span class="text-gray-600">Tax</span>
+                    <span class="text-gray-800 font-medium">$8.00</span>
+                </div>
+                <div class="flex justify-between text-lg font-semibold">
+                    <span class="text-gray-800">Total</span>
+                    <span class="text-gray-900">$117.00</span>
+                </div>
+            </div>
+
+            <!-- Checkout Button -->
+            <div class="mt-6">
+                <button class="w-full py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-md">
+                    Proceed to Checkout
+                </button>
+            </div>
+        </div>
+    </div>
+</section> {% endcomment %}
 
 <!-- Footer -->
-<footer class="bg-gray-800 text-white py-4">
+<footer class="bg-gray-800 text-white py-4 mt-6">
     <div class="container mx-auto">
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
@@ -145,18 +887,16 @@
             </div>
             <div>
                 <h5 class="text-lg font-semibold">Address</h5>
-                <p>2-B East Street, Karachi</p>
+                <p>2-B East Street, kathamandu</p>
             </div>
         </div>
         <p class="mt-4 text-center">&copy; 2024 Cool Boys Fashion Store</p>
     </div>
 </footer>
 
-<!-- Tailwind JS (if needed) -->
+
+
 <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
-
-<!-- Scroll Effect Script -->
-
 <script src="{% static 'js/script.js' %}"></script>
 </body>
 </html>

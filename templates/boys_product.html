@@ -1,0 +1,144 @@
+{% extends "home.html" %}
+{% load static %}
+{% block hero %}
+<section class="pt-40">
+    <div class="w-11/12 mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
+        <!-- Filter Section (Left Sidebar) -->
+        <div class="md:col-span-1">
+            <h2 class="text-2xl font-semibold mb-4">For Him</h2>
+
+            <!-- Filter by color -->
+            <div class="mb-6">
+                <h3 class="text-lg font-medium mb-2">Filter by color</h3>
+                <select class="w-full border border-gray-300 rounded-lg p-2">
+                    <option value="all">All</option>
+                    <option value="black">Black</option>
+                    <option value="blue">Blue</option>
+                    <option value="red">Red</option>
+                </select>
+            </div>
+
+            <!-- Filter by size -->
+            <div class="mb-6">
+                <h3 class="text-lg font-medium mb-2">Filter by clothing size</h3>
+                <div class="grid grid-cols-3 gap-2">
+                    <button class="border border-gray-300 px-4 py-2 rounded-lg text-gray-700">XS</button>
+                    <button class="border border-gray-300 px-4 py-2 rounded-lg text-gray-700">S</button>
+                    <button class="border border-gray-300 px-4 py-2 rounded-lg text-gray-700">M</button>
+                    <button class="border border-gray-300 px-4 py-2 rounded-lg text-gray-700">L</button>
+                    <button class="border border-gray-300 px-4 py-2 rounded-lg text-gray-700">XL</button>
+                    <button class="border border-gray-300 px-4 py-2 rounded-lg text-gray-700">XXL</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="md:col-span-3 grid grid-cols-2 lg:grid-cols-4 gap-6">
+            <!-- Example Product Card -->
+            <div class="bg-white shadow-lg rounded-lg overflow-hidden">
+                <div class="relative img-zoom-container">
+                    <a href="{% url "cart" %}"><img src="{% static 'image/hero1.jpg' %}" alt="Product 1" class="w-full h-64 object-contain p-3"></a>
+                    <!-- Zoom Icon Button Overlay -->
+                    <button class="zoom-icon absolute top-3 right-3 text-red-500  p-2 ">
+                        <i class="fas fa-heart"></i>
+                    </button>
+                
+                </div>
+                <div class="p-4">
+                    <h3 class="text-lg font-semibold">Product Name</h3>
+                    <p class="text-sm text-gray-500">Winter Wear</p>
+                    <div class="flex items-center space-x-2">
+                        <span class="text-lg font-semibold">रु 1,890</span>
+                        <span class="text-gray-500 line-through">रु 3,290</span>
+                    </div>
+                </div>
+                <div class="flex space-x-4 text-sm pb-2 pl-2">
+                    <a href="{% url "cart" %}" class="bg-blue-600 text-white  px-2 py-1 rounded-lg hover:bg-blue-700">
+                        <i class="fas fa-cart-plus"></i> Add to Cart
+                    </a>
+                    <a href="{% url "buy_now" %}" class="bg-green-600 text-white  px-2 py-1 rounded-lg hover:bg-green-700">
+                        Buy Now
+                    </a>
+                </div>
+            </div>
+            <!-- Add more product cards as needed -->
+        </div>
+    </div>
+</section>
+
+<!-- Modal for Image Zoom -->
+<div id="myModal" class="modal">
+    <span class="close">&times;</span>
+    <img class="modal-content" id="img01">
+</div>
+
+<!-- CSS for Modal and Icons -->
+<style>
+.modal {
+    margin-top: 80px;
+    display: none;
+    position: fixed;
+    z-index: 50;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    justify-content: center;
+    align-items: center;
+    overflow: auto;
+}
+
+.modal-content {
+    max-width: 90%;
+    max-height: 80vh;
+    margin: auto;
+    border-radius: 8px;
+}
+
+.close {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    color: #fff;
+    font-size: 30px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.zoom-icon {
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.zoom-icon:hover {
+    background-color: #555;
+}
+
+.heart-icon {
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.heart-icon:hover {
+    color: #e60000; /* Darker red on hover */
+}
+</style>
+
+<!-- JavaScript for Modal -->
+<script>
+document.querySelectorAll('.zoom-icon').forEach(function(icon) {
+    icon.onclick = function() {
+        var modal = document.getElementById("myModal");
+        var modalImg = document.getElementById("img01");
+        var productImage = this.closest('.img-zoom-container').querySelector('img');
+
+        modal.style.display = "flex"; // Display modal as flex for centering
+        modalImg.src = productImage.src; // Set modal image to the product image source
+    }
+});
+
+document.getElementsByClassName("close")[0].onclick = function() {
+    document.getElementById("myModal").style.display = "none";
+}
+</script>
+{% endblock %}
