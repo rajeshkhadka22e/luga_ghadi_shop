@@ -115,27 +115,29 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <!-- Product 1 -->
+
+
+                        
                         <tr class="product-row">
                             <td class="py-3 px-4 border-b text-gray-700">
                                 <div class="flex items-center space-x-4">
-                                    <img src="{% static 'image/hero1.jpg' %}" alt="Product 1" class="w-24 h-24 object-contain rounded-md">
-                                    <span>Product 1</span>
+                                    <img src="{{ product.main_image.url }}" alt="Product 1" class="w-24 h-24 object-contain rounded-md">
+                                    <span>{{ product.name }}</span>
                                 </div>
                             </td>
                             <td class="py-3 px-4 border-b text-gray-700">
                                 <div class="flex items-center space-x-2">
-                                    
-                                    <input type="number" class="quantity" value="1" min="1" readonly>
+                                    <input type="number" class="quantity" value="1" min="1" readonly />
                                     <button class="quantity-btn" onclick="changeQuantity(event, -1)">-</button>
                                     <button class="quantity-btn" onclick="changeQuantity(event, 1)">+</button>
                                 </div>
                             </td>
-                            <td class="py-3 px-4 border-b text-gray-700">$60.00</td>
-                            <td class="py-3 px-4 border-b text-gray-700 total-price">$60.00</td>
+                            <td class="py-3 px-4 border-b text-gray-700 real-price">रु {{ product.discounted_price }}</td>
+                            <td class="py-3 px-4 border-b text-gray-700 total-price">रु <span class="single-total">{{ product.discounted_price }}</span></td>
                         </tr>
+                        
                         <!-- Product 2 -->
-                        <tr class="product-row">
+                        {% comment %} <tr class="product-row">
                             <td class="py-3 px-4 border-b text-gray-700">
                                 <div class="flex items-center space-x-4">
                                     <img src="{% static 'image/hero1.jpg' %}" alt="Product 2" class="w-24 h-24 object-contain rounded-md">
@@ -151,34 +153,37 @@
                             </td>
                             <td class="py-3 px-4 border-b text-gray-700">$30.00</td>
                             <td class="py-3 px-4 border-b text-gray-700 total-price">$60.00</td>
-                        </tr>
+                        </tr> {% endcomment %}
                     </tbody>
                 </table>
             </div>
         
-            <!-- Discount Code -->
             <div class="mt-4">
+                <!-- Discount Section -->
                 <label for="discount-code" class="text-lg font-semibold text-gray-800">Enter Discount Code:</label>
                 <input type="text" id="discount-code" class="py-2 px-4 border border-gray-300 rounded-md">
                 <button onclick="applyDiscount()" class="ml-2 py-2 px-4 bg-blue-600 text-white rounded-md">Apply</button>
             </div>
-        
+            
             <!-- Shipping Method -->
             <div class="mt-4">
                 <label for="shipping-method" class="text-lg font-semibold text-gray-800">Select Shipping Method:</label>
-                <select id="shipping-method" class="py-2 px-4 border border-gray-300 rounded-md">
-                    <option value="10">Standard Shipping ($10.00)</option>
-                    <option value="20">Express Shipping ($20.00)</option>
+                <select id="shipping-method" class="py-2 px-4 border border-gray-300 rounded-md" onchange="updateShipping()">
+                    <option value="80">Standard Shipping (रु 80.00)</option>
+                <option value="100">Express Shipping (रु 100.00)</option>
                 </select>
             </div>
-        
+            
             <!-- Total Price Summary -->
             <div class="mt-4 text-right">
-                <h4 class="text-lg font-semibold text-gray-800">Subtotal: $<span id="subtotal">110.00</span></h4>
-                <h4 class="text-lg font-semibold text-gray-800">Shipping: $<span id="shipping-cost">10.00</span></h4>
-                <h4 class="text-lg font-semibold text-gray-800">Discount: $<span id="discount">0.00</span></h4>
-                <h3 class="text-xl font-semibold text-gray-800 mt-2">Total: $<span id="total">120.00</span></h3>
+                <h4 class="text-lg font-semibold text-gray-800">Subtotal: रु <span id="subtotal">110.00</span></h4>
+                <h4 class="text-lg font-semibold text-gray-800">Shipping: रु <span id="shipping-cost">10.00</span></h4>
+                <h4 class="text-lg font-semibold text-gray-800">Discount: रु <span id="discount">0.00</span></h4>
+                <h3 class="text-xl font-semibold text-gray-800 mt-2">Total: रु <span id="total">120.00</span></h3>
             </div>
+            
+            
+            
         </div>
         
         <!-- Submit Button -->
@@ -188,93 +193,67 @@
     <div>
 
 </section>
+<script>
+    let discount = 0; // Initialize discount value
+    let fixedShipping = 80; // Default shipping value
 
-    <script>
-    // Select all quantity inputs and attach event listeners
-    document.querySelectorAll('.quantity').forEach(input => {
-        input.addEventListener('input', updateBilling);
-    });
-    
-    // Add event listener for shipping method selection
-    document.getElementById('shipping-method').addEventListener('change', updateBilling);
-    
-    // Function to change quantity via button
-    function changeQuantity(event, change) {
-        const quantityInput = event.target.parentElement.querySelector('.quantity');
-        let newQuantity = parseInt(quantityInput.value) + change;
-        
-        // Ensure the quantity does not go below 1
-        if (newQuantity < 1) {
-            newQuantity = 1;
-        }
-        
+    function changeQuantity(event, value) {
+        const row = event.target.closest('tr');
+        const quantityInput = row.querySelector('.quantity');
+        const realPrice = parseFloat(row.querySelector('.real-price').textContent.replace('रु', '').trim());
+        const totalPriceElement = row.querySelector('.single-total');
+
+        let newQuantity = parseInt(quantityInput.value) + value;
+        if (newQuantity < 1) newQuantity = 1;
         quantityInput.value = newQuantity;
-        updateBilling();
+
+        const newTotalPrice = realPrice * newQuantity;
+        totalPriceElement.textContent = newTotalPrice.toFixed(2);
+
+        updateTotalPrice();
     }
-    
-    function updateBilling() {
+
+    function updateTotalPrice() {
         let subtotal = 0;
+
         const rows = document.querySelectorAll('.product-row');
-        
         rows.forEach(row => {
-            const price = parseFloat(row.querySelector('td:nth-child(3)').textContent.replace('$', ''));
-            const quantity = parseInt(row.querySelector('.quantity').value || 1);
-            const totalCell = row.querySelector('.total-price');
-            
-            // Update total for the row
-            const total = price * quantity;
-            totalCell.textContent = '$' + total.toFixed(2);
-            
-            // Add to subtotal
-            subtotal += total;
+            const totalPrice = parseFloat(row.querySelector('.single-total').textContent);
+            subtotal += totalPrice;
         });
-    
-        // Get shipping cost based on the selected shipping method
-        const shippingCost = parseFloat(document.getElementById('shipping-method').value);
-        document.getElementById('shipping-cost').textContent = shippingCost.toFixed(2);
-    
-        // Get any discounts
-        const discount = parseFloat(document.getElementById('discount').textContent);
-    
-        // Update subtotal, total, and total summary
+
         document.getElementById('subtotal').textContent = subtotal.toFixed(2);
-        updateTotal(subtotal, shippingCost, discount);
-    }
-    
-    function updateTotal(subtotal, shippingCost, discount) {
-        const total = subtotal + shippingCost - discount;
+
+        const total = subtotal + fixedShipping - discount;
+        document.getElementById('shipping-cost').textContent = fixedShipping.toFixed(2);
+        document.getElementById('discount').textContent = discount.toFixed(2);
         document.getElementById('total').textContent = total.toFixed(2);
     }
-    
+
     function applyDiscount() {
-        const discountCode = document.getElementById('discount-code').value;
-        let discount = 0;
-    
-        // Example discount codes
-        if (discountCode === 'SAVE10') {
-            discount = 10; // Apply $10 discount
-        } else if (discountCode === 'SAVE20') {
-            discount = 20; // Apply $20 discount
+        const discountCodeInput = document.getElementById('discount-code').value.trim();
+        const validCode = 'DISCOUNT10';
+
+        if (discountCodeInput.toUpperCase() === validCode.toUpperCase()) {
+            discount = 10.00;
+            alert("Discount applied successfully!");
+        } else {
+            discount = 0;
+            alert("Invalid discount code!");
         }
-    
-        // Update the discount and recalculate the total
-        document.getElementById('discount').textContent = discount.toFixed(2);
-        const subtotal = parseFloat(document.getElementById('subtotal').textContent);
-        const shippingCost = parseFloat(document.getElementById('shipping-cost').textContent);
-        updateTotal(subtotal, shippingCost, discount);
+
+        updateTotalPrice();
     }
-    
-    // Optional: You can handle the Complete Purchase button click
-    document.getElementById('complete-purchase').addEventListener('click', () => {
-        alert("Thank you for your purchase! Your total is $" + document.getElementById('total').textContent);
-    });
-    </script>
-    
 
+    function updateShipping() {
+        const shippingMethod = document.getElementById('shipping-method');
+        fixedShipping = parseFloat(shippingMethod.value);
+        updateTotalPrice();
+    }
 
-
-
-
+    // Initialize with default values
+    updateTotalPrice();
+</script>
 
 
 

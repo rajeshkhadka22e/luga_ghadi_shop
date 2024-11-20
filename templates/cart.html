@@ -4,34 +4,38 @@
 
 <!-- Product Section -->
 <!-- Product Section -->
-<section class=" mx-auto mt-24 bg-white p-8 rounded shadow-lg md:mt-60">
+<!-- product_detail.html -->
+<!-- product_detail.html -->
+<section class="mx-auto mt-24 bg-white p-8 rounded shadow-lg md:mt-60">
     <div class="grid md:grid-cols-2 gap-8">
         <!-- Product Image -->
         <div class="relative">
-            <img id="productImage" src="{% static 'image/hero1.jpg' %}" 
-                 alt="Product Image" 
-                 class="w-full h-full max-h-96 object-contain  rounded-lg">
+            <img id="productImage" 
+                 src="{{ product.main_image.url }}" 
+                 alt="{{ product.name }}" 
+                 class="w-full h-full max-h-96 object-contain rounded-lg">
         </div>
 
         <!-- Product Details -->
         <div>
-            <h2 class="text-3xl font-semibold mb-2">Product Name</h2>
-            <p class="text-gray-600 mb-4">Category: Winter Wear</p>
+            <h2 class="text-3xl font-semibold mb-2">{{ product.name }}</h2>
+            <p class="text-gray-600 mb-4">Category: {{ product.category.name }}</p>
             <div class="flex items-center space-x-2 mb-4">
-                <span class="text-lg font-semibold">रु 1,890</span>
-                <span class="text-gray-500 line-through">रु 3,290</span>
+                <span class="text-lg font-semibold">रु {{ product.discounted_price }}</span>
+                <span class="text-gray-500 line-through">रु {{ product.selling_price }}</span>
             </div>
 
-            <p class="text-gray-700 mb-6">This product is a top-quality winter wear item with premium materials...</p>
+            <p class="text-gray-700 mb-6">{{ product.description }}</p>
 
             <!-- Size Selector -->
             <label class="block font-medium mb-2">Select Size</label>
             <select class="w-full border-gray-300 rounded-lg mb-6 p-2">
-                <option>XS</option>
-                <option>S</option>
-                <option>M</option>
-                <option>L</option>
-                <option>XL</option>
+               
+                    <option>XS</option>
+                    <option>S</option>
+                    <option>M</option>
+                    <option>L</option>
+                    <option>XL</option>
             </select>
 
             <!-- Quantity Selector -->
@@ -51,16 +55,15 @@
     </div>
 </section>
 
-
 <!-- Related Products Carousel -->
 <section class="container mx-auto mt-12">
     <h2 class="text-2xl font-semibold mb-6">Related Products</h2>
     <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
         <!-- Each card represents a related product -->
-        <div class="bg-white p-4 rounded shadow">
-            <img src="{% static 'image/hero1.jpg' %}" alt="Related Product" class="w-full h-40 object-contain  rounded-lg mb-2">
-            <h3 class="text-lg font-medium mb-1">Product 1</h3>
-            <p class="text-gray-500">रु 1,500</p>
+        <div class="bg-white  rounded shadow">
+            <img src="{{ product.main_image.url }}" alt=" {{product.category.name}}" class="w-full h-40 object-cover  rounded-lg mb-2">
+            <h3 class="text-lg font-medium mb-1">{{ product.name }}</h3>
+            <p class="text-gray-500">रु {{product.discounted_price}}</p>
         </div>
         <!-- Repeat for other related products -->
     </div>

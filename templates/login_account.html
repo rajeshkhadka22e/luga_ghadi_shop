@@ -2,8 +2,7 @@
 
 {% block hero %}
 
-
-
+{% load socialaccount %}
 <!-- Login Form -->
 <div class="max-w-md mx-auto p-4 my-60 justify-around border border-gray-300 rounded-md shadow-md">
     <h2 class="text-2xl font-semibold text-center mb-4">Login</h2>
@@ -31,7 +30,11 @@
     </form>
 
     <div class="text-center mt-4">
-        <p class="text-sm">Don't have an account? <a href="{% url 'register_account' %}" class="text-blue-600 hover:underline">Register here</a>.</p>
+        <p class="text-sm">Don't have an account? <a href="{% url 'register_account' %}" class="text-blue-600 hover:underline">Register here</a>
+<!-- Login with Google button -->
+<a href="{% provider_login_url 'google' %}">Login with Google</a>
+
+.</p>
     </div>
 </div>
 {% endblock %}

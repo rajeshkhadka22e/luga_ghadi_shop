@@ -5,8 +5,10 @@
     <div class="w-11/12 mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
         <!-- Filter Section (Left Sidebar) -->
         <div class="md:col-span-1">
-            <h2 class="text-2xl font-semibold mb-4">For Him</h2>
-
+                <h2 class="text-2xl font-semibold mb-4">{{ category_name|capfirst }}</h2>
+              
+            
+    
             <!-- Filter by color -->
             <div class="mb-6">
                 <h3 class="text-lg font-medium mb-2">Filter by color</h3>
@@ -33,34 +35,37 @@
         </div>
 
         <div class="md:col-span-3 grid grid-cols-2 lg:grid-cols-4 gap-6">
-            <!-- Example Product Card -->
+            {% for product in products %}
             <div class="bg-white shadow-lg rounded-lg overflow-hidden">
                 <div class="relative img-zoom-container">
-                    <a href="{% url "cart" %}"><img src="{% static 'image/hero1.jpg' %}" alt="Product 1" class="w-full h-64 object-contain p-3"></a>
-                    <!-- Zoom Icon Button Overlay -->
-                    <button class="zoom-icon absolute top-3 right-3 text-red-500  p-2 ">
+                    <a href="{% url 'cart' product.id %}">
+                        <img src="{{ product.main_image.url }}" alt="{{ product.name }}" class="w-full h-64 object-cover p-3">
+                    </a>
+                    <button class="zoom-icon absolute top-3 right-3 text-red-500 p-2">
                         <i class="fas fa-heart"></i>
                     </button>
-                
                 </div>
                 <div class="p-4">
-                    <h3 class="text-lg font-semibold">Product Name</h3>
-                    <p class="text-sm text-gray-500">Winter Wear</p>
-                    <div class="flex items-center space-x-2">
-                        <span class="text-lg font-semibold">रु 1,890</span>
-                        <span class="text-gray-500 line-through">रु 3,290</span>
-                    </div>
+                    <h3 class="text-lg font-semibold">{{ product.name }}</h3>
+                    <p class="text-sm text-gray-500">{{ product.description }}</p>
+                    
+                        <div class=" font-semibold  text-gray-500">रु {{ product.discounted_price }}</div>
+                        
+                        <div class="text-gray-500 line-through">रु {{ product.selling_price }}</div>
+                    
                 </div>
                 <div class="flex space-x-4 text-sm pb-2 pl-2">
-                    <a href="{% url "cart" %}" class="bg-blue-600 text-white  px-2 py-1 rounded-lg hover:bg-blue-700">
+                    <a href="{% url 'cart' product.id %}" class="bg-blue-600 text-white px-2 py-1 rounded-lg hover:bg-blue-700">
                         <i class="fas fa-cart-plus"></i> Add to Cart
                     </a>
-                    <a href="{% url "buy_now" %}" class="bg-green-600 text-white  px-2 py-1 rounded-lg hover:bg-green-700">
+                    <a href="{% url 'buy_now' product.id %}" class="bg-green-600 text-white px-2 py-1 rounded-lg hover:bg-green-700">
                         Buy Now
                     </a>
                 </div>
             </div>
-            <!-- Add more product cards as needed -->
+            {% empty %}
+            <p>No products available in this category.</p>
+            {% endfor %}
         </div>
     </div>
 </section>
