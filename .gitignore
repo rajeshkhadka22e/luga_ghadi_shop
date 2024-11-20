@@ -1,0 +1,13 @@
+.env
+.env.local
+
+# Ignore log files
+*.log
+
+# Ignore all files in a specific folder
+/node_modules/
+
+# Ignore specific file types
+*.tmp
+
+.venv/
